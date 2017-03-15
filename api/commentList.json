@@ -1,24 +1,36 @@
 {
   "list":[
     {
+    "id":1,
     "userName":"吴小连",
     "date":"2017-03-12",
-    "text":"刘其深，我是你老婆。你这篇文章写得不错"
+    "text":"你这篇文章写得不错",
+    "likeCount":1,
+    "hadAddLike":true
     },
     {
+      "id":2,
       "userName":"刘其湛",
       "date":"2017-03-12",
-      "text":"这片文章得点个赞"
+      "text":"这片文章得点个赞",
+      "likeCount":2,
+      "hadAddLike":false
     },
     {
+      "id":3,
       "userName":"little sam",
       "date":"2017-03-12",
-      "text":"爸爸，加油！"
+      "text":"爸爸，加油！",
+      "likeCount":3,
+      "hadAddLike":false
     },
     {
+      "id":4,
       "userName":"陌生人",
       "date":"2017-03-12",
-      "text":"一般般，世界第三"
+      "text":"一般般，世界第三",
+      "likeCount":4,
+      "hadAddLike":false
     }
   ]
 }

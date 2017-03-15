@@ -3,21 +3,38 @@ import React ,{ Component , PropTypes } from "react";
 
 class CommentItem extends  Component {
     static propTypes = {
+        id:PropTypes.number,
         userName:PropTypes.string,
         text:PropTypes.string,
-        date:PropTypes.string
+        date:PropTypes.string,
+        likeCount:PropTypes.number,
+        addLikeCount:PropTypes.func,
+        hadAddLike:PropTypes.bool,
+        cancelAddLike:PropTypes.func
     }
 
     render(){
         let {
+            id,
             userName,
             text,
-            date
+            date,
+            likeCount,
+            addLikeCount,
+            hadAddLike,
+            cancelAddLike
         }=this.props;
+
         return (
             <li className="cf">
                 <span>{userName + "说："}</span>
-                <span>{text}</span>
+                <span style={{marginRight:"20px"}}>{text}</span>
+                <span>{`${likeCount}个人赞过他 `}</span>
+                {
+                    hadAddLike ?
+                    (<button onClick={() => { cancelAddLike(id)}}>取消点赞</button>) :
+                    (<button onClick={() => { addLikeCount(id)}}>我也赞他</button>)
+                }
                 <span style={{float:"right"}}>{date}</span>
             </li>
         )
@@ -53,12 +70,17 @@ class Comment extends Component {
     static propTypes = {
         loadCommentList:PropTypes.func,
         submitComment:PropTypes.func,
-        commentList:PropTypes.arrayOf(PropTypes.object)
+        commentList:PropTypes.arrayOf(PropTypes.object),
+        addLikeCount:PropTypes.func,
+        cancelAddLike:PropTypes.func
     }
 
     render(){
         let {
-            commentList
+            commentList,
+            submitComment,
+            addLikeCount,
+            cancelAddLike
         }=this.props;
 
         let isEmpty=commentList && commentList.length ? false : true;
@@ -72,14 +94,19 @@ class Comment extends Component {
                         {
                             commentList.map((item,index) => {
                                 return (
-                                    <CommentItem key={index+1} {...item}/>
+                                    <CommentItem
+                                        key={index+1}
+                                        {...item}
+                                        addLikeCount={addLikeCount}
+                                        cancelAddLike={cancelAddLike}
+                                    />
                                 )
                             })
                         }
                     </ul>  :
                     <div>暂时没有用户评论！</div>
                 }
-                <CommentForm submitComment={this.props.submitComment}/>
+                <CommentForm submitComment={submitComment}/>
             </div>
             )
 

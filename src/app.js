@@ -13,7 +13,6 @@ const store=configureStore();
 const history=syncHistoryWithStore(hashHistory,store);
 
 ReactDOM.render(
-    (
         <Provider store={store}>
             <Router history={history}>
                 <Route path="/" component={Frame}>
@@ -22,5 +21,4 @@ ReactDOM.render(
                 </Route>
             </Router>
         </Provider>
-    )
 ,document.getElementById("root"));

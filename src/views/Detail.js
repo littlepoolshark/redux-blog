@@ -19,6 +19,8 @@ class Detail extends Component {
                     commentList={this.props.commentList}
                     submitComment={this.props.submitComment}
                     loadCommentList={this.props.loadCommentList}
+                    addLikeCount={this.props.addLikeCount}
+                    cancelAddLike={this.props.cancelAddLike}
                 />
             </div>
         )
@@ -46,7 +48,9 @@ function mapDispatchToProps(dispatch,ownProps){
     return {
         loadArticleDetail:listActions.loadArticleDetail.bind(null,dispatch),
         loadCommentList:commentActions.loadCommentList.bind(null,dispatch),
-        submitComment:commentActions.submitComment.bind(null,dispatch)
+        submitComment:commentActions.submitComment.bind(null,dispatch),
+        addLikeCount:commentActions.addLikeCount.bind(null,dispatch),
+        cancelAddLike:commentActions.cancelAddLike.bind(null,dispatch)
     }
 }
 
