@@ -12,7 +12,6 @@ class  Frame extends Component {
                 <section className="container">
                     {this.props.children}
                 </section>
-                <DevTools />
             </div>
         )
     }
