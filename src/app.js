@@ -1,3 +1,4 @@
+import "./app.scss";
 import ReactDOM from "react-dom";
 import React from "react";
 import configureStore from "./redux/configureStore";
@@ -5,9 +6,14 @@ import { Provider } from "react-redux";
 import { syncHistoryWithStore } from "react-router-redux";
 import { hashHistory,Router,Route,IndexRoute, } from "react-router";
 
+//import WeUI from "react-weui";
+//import "weui";
+//import "react-weui/lib/react-weui.min.css";
+
 import Frame from "./layouts/Frame";
 import Home from "./views/Home";
 import Detail from "./views/Detail";
+
 
 const store=configureStore();
 const history=syncHistoryWithStore(hashHistory,store);

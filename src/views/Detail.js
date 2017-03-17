@@ -8,7 +8,7 @@ import Comment from "../components/Detail/Comment";
 class Detail extends Component {
     render(){
         return (
-            <div>
+            <div id="detail">
                 <ArticleDetail
                     currArticleId={this.props.currArticleId}
                     nextArticleId={this.props.nextArticleId}

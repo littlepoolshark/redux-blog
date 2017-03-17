@@ -1,4 +1,5 @@
 import React ,{ Component , PropTypes } from "react";
+import { Toast } from "react-weui";
 
 class ArticleDetail extends Component {
     static propTypes={
@@ -26,7 +27,7 @@ class ArticleDetail extends Component {
 
         if(loading) {
             return (
-                <div>loading......</div>
+                <Toast icon="loading" show={true}>加载中...</Toast>
             )
         }
 
@@ -37,7 +38,7 @@ class ArticleDetail extends Component {
         }
 
         return (
-            <div>
+            <div className="article-detail">
                 <h1>{title} <span style={{float:"right"}}>{date}</span></h1>
                 <article>
                     {description}

@@ -1,4 +1,13 @@
 import React ,{ Component , PropTypes } from "react";
+import {  Button ,
+          Dialog ,
+          CellsTitle,
+          Form,
+          FormCell,
+          CellBody,
+          TextArea,
+          Toptips
+} from "react-weui";
 
 
 class CommentItem extends  Component {
@@ -42,27 +51,121 @@ class CommentItem extends  Component {
 };
 
 class CommentForm extends  Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            isDialogShow:false,
+            isShowTopTip:false,
+            commentText:"",
+            topTipText:""
+        }
+        this.closeDialog=this.closeDialog.bind(this);
+        this.handleCommentTextChange=this.handleCommentTextChange.bind(this);
+        this.handlePublishComment=this.handlePublishComment.bind(this);
+    }
+
+
     static propTypes = {
         submitComment:PropTypes.func
     }
 
     submitComment(){
-        let commentText=document.getElementById("commentText");
-        this.props.submitComment(commentText.value);
-        commentText.value="";
+        let commentText=this.state.commentText;
+        this.props.submitComment(commentText);
+        this.clearComment();
     }
+
+    clearComment(){
+        this.setState({
+            commentText:""
+        })
+    }
+
+    handleCommentTextChange(e){
+        this.setState({
+            commentText: e.target.value
+        })
+    }
+
+    handlePublishComment(){
+        let currCommentText=this.state.commentText;
+        if(currCommentText){
+            this.openDialog();
+        }else {
+            this.giveSomeWarn("评论不能为空哦！")
+        }
+
+    }
+
+    openDialog(){
+        this.setState({
+            isDialogShow:true
+        })
+    }
+
+    closeDialog(){
+        this.setState({
+            isDialogShow:false
+        })
+    }
+
+    giveSomeWarn(warnText){
+       this.setState({
+           isShowTopTip:true,
+           topTipText:warnText
+       },() => {
+           this.topTipTimer=setTimeout(()=>{
+               this.setState({
+                   isShowTopTip:false,
+                   topTipText:""
+               })
+           },2000)
+       })
+    }
+
+
 
     render (){
         return (
-            <div>
-                <textarea name="" id="commentText" cols="30" rows="10" ref="commentText"></textarea>
+            <div className="comment-form">
+                <CellsTitle>发表评论</CellsTitle>
+                <Form>
+                    <FormCell>
+                        <CellBody>
+                            <TextArea
+                                placeholder="Enter your comments"
+                                rows="3"
+                                maxlength="200"
+                                value={this.state.commentText}
+                                onChange={this.handleCommentTextChange}>
+                            </TextArea>
+                        </CellBody>
+                    </FormCell>
+                </Form>
                 <div>
-                    <button onClick={() => {
-                        this.submitComment()
-                    }}>发表</button>
+                    <Button size="small" onClick={this.handlePublishComment}>发表</Button>
                 </div>
+                <Dialog
+                    show={this.state.isDialogShow}
+                    title="提示"
+                    type="ios"
+                    buttons={[
+                        {type:"default",label:"取消",onClick:this.closeDialog},
+                        {type:"primary",label:"确定",onClick:() => {
+                           this.closeDialog();
+                           this.submitComment();
+                        }}
+                        ]}
+                >
+                    你确定要发表这条惊天动地的评论吗？
+                </Dialog>
+                <Toptips type="warn" show={this.state.isShowTopTip}>{this.state.topTipText}</Toptips>
             </div>
         )
+    }
+
+    componentWillUnMount(){
+        this.topTipTimer && clearTimeout(this.topTipTimer);
     }
 };
 
@@ -86,7 +189,7 @@ class Comment extends Component {
         let isEmpty=commentList && commentList.length ? false : true;
 
         return (
-            <div className="comment-container">
+            <div className="comment-list">
                 <h1>用户评论</h1>
                 {
                     !isEmpty ?

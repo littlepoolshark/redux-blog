@@ -5,17 +5,22 @@ import PreviewList from "../components/Home/PreviewList";
 import { listActions } from "./HomeRedux";
 import { push } from "react-router-redux";
 
+import {   Footer,FooterText } from "react-weui";
+
 
 class Home extends Component {
     render(){
         return (
-            <div>
+            <div id="home">
                 <h1>Home</h1>
                 <PreviewList
                     {...this.props.list}
                     loadArticles={this.props.loadArticles}
                     push={this.props.push}
                 />
+                <Footer>
+                    <FooterText>Copyright &copy; 2008-2016 sam.liu</FooterText>
+                </Footer>
             </div>
 
         )
