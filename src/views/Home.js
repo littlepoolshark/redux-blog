@@ -12,7 +12,6 @@ class Home extends Component {
     render(){
         return (
             <div id="home">
-                <h1>Home</h1>
                 <PreviewList
                     {...this.props.list}
                     loadArticles={this.props.loadArticles}

@@ -2,27 +2,38 @@
  "list":[
    {
      "id":1,
-     "title":"angular2 中那些我看不懂的地方",
-     "description":"angular2 中那些我看不懂的地方",
-     "date":"2016-04-17"
+     "title":"Angular4是否值得我们期待？",
+     "description":"Angular，Google大厂出厂，信誉和质量的保障。但是它断崖式和跳跃式的升级很让它的粉丝困惑。",
+     "date":"2016-04-17",
+     "logoUrl":"../../src/img/angular.jpg"
    },
    {
      "id":2,
-     "title":"react 中那些我看不懂的地方",
-     "description":"react 中那些我看不懂的地方",
-     "date":"2016-04-17"
+     "title":"深入研究react技术栈",
+     "description":"react之所以强大，是因为它的生态圈技术所堆起一个栈道。",
+     "date":"2016-04-17",
+     "logoUrl":"../../src/img/react-logo.jpg"
    },
    {
      "id":3,
-     "title":"redux 中那些我看不懂的地方",
-     "description":"redux 中那些我看不懂的地方",
-     "date":"2016-04-17"
+     "title":"redux",
+     "description":"redux，为我们管理前端数据制定了更加严密和规范的规则。不用于flux的宽松，redux更利于团队的合作。",
+     "date":"2016-04-17",
+     "logoUrl":"../../src/img/redux-logo.jpeg"
    },
    {
      "id":4,
-     "title":"react-router 中那些我看不懂的地方",
-     "description":"react-router 中那些我看不懂的地方",
-     "date":"2016-04-17"
+     "title":"react-router",
+     "description":"react-router，一个功能强大的前端路由。它提供了声明式的路由配置，无缝对接到react的组件化编程。",
+     "date":"2016-04-17",
+     "logoUrl":"../../src/img/redux-logo.jpeg"
+   },
+   {
+     "id":5,
+     "title":"react-router",
+     "description":"react-router，一个功能强大的前端路由。它提供了声明式的路由配置，无缝对接到react的组件化编程。",
+     "date":"2016-04-17",
+     "logoUrl":"../../src/img/redux-logo.jpeg"
    }
  ]
 }

@@ -1,6 +1,19 @@
 import React ,{ Component , PropTypes } from "react";
 import Preview from "./Preview";
 
+import {
+    Panel,
+    PanelHeader,
+    PanelBody,
+    PanelFooter,
+    Cells,
+    Cell,
+    CellHeader,
+    CellBody,
+    CellFooter
+} from "react-weui";
+
+
 class PreviewList extends Component {
     static propTypes = {
         loading:PropTypes.bool,
@@ -27,11 +40,24 @@ class PreviewList extends Component {
         }
         return(
             <div>
-                {
-                    articleList.map(item => {
-                        return (<Preview {...item} key={item.id} push={push}></Preview>)
-                    })
-                }
+                <Panel>
+                    <PanelHeader>
+                        最新热文
+                    </PanelHeader>
+                    <PanelBody>
+                        {
+                            articleList.map(item => {
+                             return (<Preview {...item} key={item.id} push={push}></Preview>)
+                             })
+                        }
+                    </PanelBody>
+                    <PanelFooter href="javascript:void(0);">
+                        <Cell access link>
+                            <CellBody>更多</CellBody>
+                            <CellFooter />
+                        </Cell>
+                    </PanelFooter>
+                </Panel>
             </div>
         )
 

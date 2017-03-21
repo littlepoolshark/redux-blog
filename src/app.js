@@ -6,10 +6,6 @@ import { Provider } from "react-redux";
 import { syncHistoryWithStore } from "react-router-redux";
 import { hashHistory,Router,Route,IndexRoute, } from "react-router";
 
-//import WeUI from "react-weui";
-//import "weui";
-//import "react-weui/lib/react-weui.min.css";
-
 import Frame from "./layouts/Frame";
 import Home from "./views/Home";
 import Detail from "./views/Detail";
@@ -22,9 +18,10 @@ ReactDOM.render(
         <Provider store={store}>
             <Router history={history}>
                 <Route path="/" component={Frame}>
-                    <IndexRoute component={Home}/>
-                    <Route path="/detail" component={Detail}/>
+                    <IndexRoute component={Frame}/>
+
                 </Route>
+                <Route path="/detail" component={Detail}/>
             </Router>
         </Provider>
 ,document.getElementById("root"));
