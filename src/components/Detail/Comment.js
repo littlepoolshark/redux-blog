@@ -1,12 +1,12 @@
 import React ,{ Component , PropTypes } from "react";
-import {  Button ,
-          Dialog ,
+import {
+          Button ,
           CellsTitle,
           Form,
           FormCell,
           CellBody,
           TextArea,
-          Toptips
+          Icon
 } from "react-weui";
 
 
@@ -36,94 +36,36 @@ class CommentItem extends  Component {
 
         return (
             <li className="cf">
-                <span>{userName + "说："}</span>
-                <span style={{marginRight:"20px"}}>{text}</span>
-                <span>{`${likeCount}个人赞过他 `}</span>
-                {
-                    hadAddLike ?
-                    (<button onClick={() => { cancelAddLike(id)}}>取消点赞</button>) :
-                    (<button onClick={() => { addLikeCount(id)}}>我也赞他</button>)
-                }
-                <span style={{float:"right"}}>{date}</span>
+                <div className="header">
+                    <div className="avatar-wrapper">
+                        <img src="../../src/img/react-logo.jpg" alt="" className="avatar"/>
+                        <div>{userName}</div>
+                    </div>
+                   <div className="date">{date}</div>
+                </div>
+                <div className="body">{text}</div>
+                <div className="footer">
+                    <div className="likeCount-wrapper">
+                        {
+                            hadAddLike ?
+                            (<Icon value="success" onClick={() => { cancelAddLike(id)}}/>) :
+                            (<Icon value="success-circle" onClick={() => { addLikeCount(id)}}/>)
+                        }
+                        <span className="like-count">{likeCount}</span>
+                    </div>
+                </div>
             </li>
         )
     }
 };
 
 class CommentForm extends  Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            isDialogShow:false,
-            isShowTopTip:false,
-            commentText:"",
-            topTipText:""
-        }
-        this.closeDialog=this.closeDialog.bind(this);
-        this.handleCommentTextChange=this.handleCommentTextChange.bind(this);
-        this.handlePublishComment=this.handlePublishComment.bind(this);
-    }
-
 
     static propTypes = {
-        submitComment:PropTypes.func
+        submitComment:PropTypes.func,
+        handleCommentTextChange:PropTypes.func,
+        commentText:PropTypes.string
     }
-
-    submitComment(){
-        let commentText=this.state.commentText;
-        this.props.submitComment(commentText);
-        this.clearComment();
-    }
-
-    clearComment(){
-        this.setState({
-            commentText:""
-        })
-    }
-
-    handleCommentTextChange(e){
-        this.setState({
-            commentText: e.target.value
-        })
-    }
-
-    handlePublishComment(){
-        let currCommentText=this.state.commentText;
-        if(currCommentText){
-            this.openDialog();
-        }else {
-            this.giveSomeWarn("评论不能为空哦！")
-        }
-
-    }
-
-    openDialog(){
-        this.setState({
-            isDialogShow:true
-        })
-    }
-
-    closeDialog(){
-        this.setState({
-            isDialogShow:false
-        })
-    }
-
-    giveSomeWarn(warnText){
-       this.setState({
-           isShowTopTip:true,
-           topTipText:warnText
-       },() => {
-           this.topTipTimer=setTimeout(()=>{
-               this.setState({
-                   isShowTopTip:false,
-                   topTipText:""
-               })
-           },2000)
-       })
-    }
-
-
 
     render (){
         return (
@@ -133,49 +75,32 @@ class CommentForm extends  Component {
                     <FormCell>
                         <CellBody>
                             <TextArea
-                                placeholder="Enter your comments"
+                                placeholder="请输入你独到的见解!"
                                 rows="3"
                                 maxlength="200"
-                                value={this.state.commentText}
-                                onChange={this.handleCommentTextChange}>
+                                value={this.props.commentText}
+                                onChange={this.props.handleCommentTextChange}>
                             </TextArea>
                         </CellBody>
                     </FormCell>
                 </Form>
                 <div>
-                    <Button size="small" onClick={this.handlePublishComment}>发表</Button>
+                    <Button size="small" onClick={this.props.submitComment}>发表</Button>
                 </div>
-                <Dialog
-                    show={this.state.isDialogShow}
-                    title="提示"
-                    type="ios"
-                    buttons={[
-                        {type:"default",label:"取消",onClick:this.closeDialog},
-                        {type:"primary",label:"确定",onClick:() => {
-                           this.closeDialog();
-                           this.submitComment();
-                        }}
-                        ]}
-                >
-                    你确定要发表这条惊天动地的评论吗？
-                </Dialog>
-                <Toptips type="warn" show={this.state.isShowTopTip}>{this.state.topTipText}</Toptips>
             </div>
         )
-    }
-
-    componentWillUnMount(){
-        this.topTipTimer && clearTimeout(this.topTipTimer);
     }
 };
 
 class Comment extends Component {
     static propTypes = {
         loadCommentList:PropTypes.func,
-        submitComment:PropTypes.func,
         commentList:PropTypes.arrayOf(PropTypes.object),
         addLikeCount:PropTypes.func,
-        cancelAddLike:PropTypes.func
+        cancelAddLike:PropTypes.func,
+        submitComment:PropTypes.func,
+        handleCommentTextChange:PropTypes.func,
+        currCommentText:PropTypes.string
     }
 
     render(){
@@ -183,7 +108,9 @@ class Comment extends Component {
             commentList,
             submitComment,
             addLikeCount,
-            cancelAddLike
+            cancelAddLike,
+            handleCommentTextChange,
+            currCommentText
         }=this.props;
 
         let isEmpty=commentList && commentList.length ? false : true;
@@ -209,7 +136,11 @@ class Comment extends Component {
                     </ul>  :
                     <div>暂时没有用户评论！</div>
                 }
-                <CommentForm submitComment={submitComment}/>
+                <CommentForm
+                    submitComment={submitComment}
+                    handleCommentTextChange={handleCommentTextChange}
+                    commentText={currCommentText}
+                />
             </div>
             )
 

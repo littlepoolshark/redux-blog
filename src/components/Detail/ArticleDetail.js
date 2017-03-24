@@ -1,5 +1,5 @@
 import React ,{ Component , PropTypes } from "react";
-import { Toast } from "react-weui";
+import { Toast,Button } from "react-weui";
 
 class ArticleDetail extends Component {
     static propTypes={
@@ -39,11 +39,14 @@ class ArticleDetail extends Component {
 
         return (
             <div className="article-detail">
-                <h1>{title} <span style={{float:"right"}}>{date}</span></h1>
+                <h1>{title} </h1>
+                <h6>{date}</h6>
                 <article>
                     {description}
                 </article>
-                <div style={{textAlign:"center",marginTop:"100px",cursor:"pointer"}} onClick={loadArticleDetail.bind(null,nextArticleId)}>下一篇</div>
+                <div className="next-article-bar" >
+                    <Button onClick={loadArticleDetail.bind(null,nextArticleId)}>下一篇</Button>
+                </div>
             </div>
         )
 
