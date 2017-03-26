@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { listActions , commentActions } from "./DetailRedux";
 import ArticleDetail from "../components/Detail/ArticleDetail";
 import Comment from "../components/Detail/Comment";
+import { push } from "react-router-redux";
+import { bindActionCreators } from "redux";
 import {
     Dialog ,
     Toptips
@@ -21,6 +23,7 @@ class Detail extends Component {
         this.closeDialog=this.closeDialog.bind(this);
         this.handleCommentTextChange=this.handleCommentTextChange.bind(this);
         this.handlePublishComment=this.handlePublishComment.bind(this);
+        this.handleNavBarClick=this.handleNavBarClick.bind(this);
     }
 
     submitComment(){
@@ -77,10 +80,16 @@ class Detail extends Component {
         })
     }
 
+    handleNavBarClick(){
+        this.props.push({
+            pathname:"/"
+        })
+    }
 
     render(){
         return (
             <div id="detail">
+                <div className="nav-bar" onClick={this.handleNavBarClick}>返回</div>
                 <ArticleDetail
                     currArticleId={this.props.currArticleId}
                     nextArticleId={this.props.nextArticleId}
@@ -143,7 +152,8 @@ function mapDispatchToProps(dispatch,ownProps){
         loadCommentList:commentActions.loadCommentList.bind(null,dispatch),
         addLikeCount:commentActions.addLikeCount.bind(null,dispatch),
         cancelAddLike:commentActions.cancelAddLike.bind(null,dispatch),
-        submitComment:commentActions.submitComment.bind(null,dispatch)
+        submitComment:commentActions.submitComment.bind(null,dispatch),
+        push:bindActionCreators(push,dispatch)
     }
 }
 
