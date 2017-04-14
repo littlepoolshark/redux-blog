@@ -22,6 +22,7 @@ class Detail extends Component {
         this.closeDialog=this.closeDialog.bind(this);
         this.handleCommentTextChange=this.handleCommentTextChange.bind(this);
         this.handlePublishComment=this.handlePublishComment.bind(this);
+        this.handleNavBarClick=this.handleNavBarClick.bind(this);
     }
 
     submitComment(){
@@ -78,6 +79,11 @@ class Detail extends Component {
         })
     }
 
+    handleNavBarClick(){
+        this.props.push({
+            pathname:"/"
+        })
+    }
 
     render(){
         return (
@@ -145,7 +151,8 @@ function mapDispatchToProps(dispatch,ownProps){
         loadCommentList:commentActions.loadCommentList.bind(null,dispatch),
         addLikeCount:commentActions.addLikeCount.bind(null,dispatch),
         cancelAddLike:commentActions.cancelAddLike.bind(null,dispatch),
-        submitComment:commentActions.submitComment.bind(null,dispatch)
+        submitComment:commentActions.submitComment.bind(null,dispatch),
+        push:bindActionCreators(push,dispatch)
     }
 }
 
