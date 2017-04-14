@@ -1,28 +1,29 @@
-import React ,{ Component , PropTypes } from "react";
+//@flow
+import React, { Component, PropTypes } from "react";
 import {
-          Button ,
-          CellsTitle,
-          Form,
-          FormCell,
-          CellBody,
-          TextArea,
-          Icon
+    Button,
+    CellsTitle,
+    Form,
+    FormCell,
+    CellBody,
+    TextArea,
+    Icon
 } from "react-weui";
 
 
-class CommentItem extends  Component {
+class CommentItem extends Component {
     static propTypes = {
-        id:PropTypes.number,
-        userName:PropTypes.string,
-        text:PropTypes.string,
-        date:PropTypes.string,
-        likeCount:PropTypes.number,
-        addLikeCount:PropTypes.func,
-        hadAddLike:PropTypes.bool,
-        cancelAddLike:PropTypes.func
+        id: PropTypes.number,
+        userName: PropTypes.string,
+        text: PropTypes.string,
+        date: PropTypes.string,
+        likeCount: PropTypes.number,
+        addLikeCount: PropTypes.func,
+        hadAddLike: PropTypes.bool,
+        cancelAddLike: PropTypes.func
     }
 
-    render(){
+    render() {
         let {
             id,
             userName,
@@ -32,24 +33,24 @@ class CommentItem extends  Component {
             addLikeCount,
             hadAddLike,
             cancelAddLike
-        }=this.props;
+        } = this.props;
 
         return (
             <li className="cf">
                 <div className="header">
                     <div className="avatar-wrapper">
-                        <img src="../../src/img/react-logo.jpg" alt="" className="avatar"/>
+                        <img src="../../src/img/react-logo.jpg" alt="" className="avatar" />
                         <div>{userName}</div>
                     </div>
-                   <div className="date">{date}</div>
+                    <div className="date">{date}</div>
                 </div>
                 <div className="body">{text}</div>
                 <div className="footer">
                     <div className="likeCount-wrapper">
                         {
                             hadAddLike ?
-                            (<Icon value="success" onClick={() => { cancelAddLike(id)}}/>) :
-                            (<Icon value="success-circle" onClick={() => { addLikeCount(id)}}/>)
+                                (<Icon value="success" onClick={() => { cancelAddLike(id) }} />) :
+                                (<Icon value="success-circle" onClick={() => { addLikeCount(id) }} />)
                         }
                         <span className="like-count">{likeCount}</span>
                     </div>
@@ -59,15 +60,15 @@ class CommentItem extends  Component {
     }
 };
 
-class CommentForm extends  Component {
+class CommentForm extends Component {
 
     static propTypes = {
-        submitComment:PropTypes.func,
-        handleCommentTextChange:PropTypes.func,
-        commentText:PropTypes.string
+        submitComment: PropTypes.func,
+        handleCommentTextChange: PropTypes.func,
+        commentText: PropTypes.string
     }
 
-    render (){
+    render() {
         return (
             <div className="comment-form">
                 <CellsTitle>发表评论</CellsTitle>
@@ -94,16 +95,16 @@ class CommentForm extends  Component {
 
 class Comment extends Component {
     static propTypes = {
-        loadCommentList:PropTypes.func,
-        commentList:PropTypes.arrayOf(PropTypes.object),
-        addLikeCount:PropTypes.func,
-        cancelAddLike:PropTypes.func,
-        submitComment:PropTypes.func,
-        handleCommentTextChange:PropTypes.func,
-        currCommentText:PropTypes.string
+        loadCommentList: PropTypes.func,
+        commentList: PropTypes.arrayOf(PropTypes.object),
+        addLikeCount: PropTypes.func,
+        cancelAddLike: PropTypes.func,
+        submitComment: PropTypes.func,
+        handleCommentTextChange: PropTypes.func,
+        currCommentText: PropTypes.string
     }
 
-    render(){
+    render() {
         let {
             commentList,
             submitComment,
@@ -111,30 +112,31 @@ class Comment extends Component {
             cancelAddLike,
             handleCommentTextChange,
             currCommentText
-        }=this.props;
+        } = this.props;
 
-        let isEmpty=commentList && commentList.length ? false : true;
+        let isEmpty = commentList && commentList.length ? false : true;
+        console.log(this.transform("green"));
 
         return (
             <div className="comment-list">
                 <h1>用户评论</h1>
                 {
                     !isEmpty ?
-                    <ul>
-                        {
-                            commentList.map((item,index) => {
-                                return (
-                                    <CommentItem
-                                        key={index+1}
-                                        {...item}
-                                        addLikeCount={addLikeCount}
-                                        cancelAddLike={cancelAddLike}
-                                    />
-                                )
-                            })
-                        }
-                    </ul>  :
-                    <div>暂时没有用户评论！</div>
+                        <ul>
+                            {
+                                commentList.map((item, index) => {
+                                    return (
+                                        <CommentItem
+                                            key={index + 1}
+                                            {...item}
+                                            addLikeCount={addLikeCount}
+                                            cancelAddLike={cancelAddLike}
+                                        />
+                                    )
+                                })
+                            }
+                        </ul> :
+                        <div>暂时没有用户评论！</div>
                 }
                 <CommentForm
                     submitComment={submitComment}
@@ -142,13 +144,30 @@ class Comment extends Component {
                     commentText={currCommentText}
                 />
             </div>
-            )
+        )
 
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.loadCommentList();
+    }
+
+    /**
+     * 
+     * 
+     * @param {("green" | "yellow" | "red")} color 
+     * @returns {string} 
+     * 
+     * @memberOf Comment(Sam Liu)
+     */
+    transform(color: "green" | "yellow" | "red"): string {
+        switch (color) {
+            case "green":
+                return "success";
+            default:
+                return "";
+        }
     }
 
 };

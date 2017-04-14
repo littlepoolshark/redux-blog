@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { listActions , commentActions } from "./DetailRedux";
 import ArticleDetail from "../components/Detail/ArticleDetail";
 import Comment from "../components/Detail/Comment";
+import Slider from '../components/UI/Slider/Slider';
 import {
     Dialog ,
     Toptips
@@ -81,6 +82,7 @@ class Detail extends Component {
     render(){
         return (
             <div id="detail">
+                <Slider/>
                 <ArticleDetail
                     currArticleId={this.props.currArticleId}
                     nextArticleId={this.props.nextArticleId}

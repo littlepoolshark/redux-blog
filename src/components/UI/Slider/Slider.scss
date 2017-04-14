@@ -1,0 +1,39 @@
+
+.slider-container {
+    width:100%;
+    height:200px;
+    overflow:hidden;
+    overflow-x: scroll;
+
+    ul.slider-wrapper {
+        width: 100%;
+        height:100%;
+        background: skyblue;
+        list-style:none;
+        padding:0;
+        margin:0;
+
+        &>li {
+            width:100%;
+            height:100%;
+            float:left;
+            
+            &:nth-child(1){
+                background: red;
+            }
+
+             &:nth-child(2){
+                background:skyblue;
+            }
+
+             &:nth-child(3){
+                background: black;
+            }
+
+             &:nth-child(4){
+                background: yellowgreen;
+            }
+
+        }
+    }
+}
