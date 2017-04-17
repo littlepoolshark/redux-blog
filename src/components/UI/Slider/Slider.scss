@@ -6,17 +6,21 @@
     overflow-x: scroll;
 
     ul.slider-wrapper {
-        width: 100%;
+        width: auto;
         height:100%;
         background: skyblue;
         list-style:none;
         padding:0;
         margin:0;
-
+        transform:translateZ(0);
+        transition-property: transform;
+        transition-timing-function: ease-in-out;
+        
         &>li {
-            width:100%;
+            width:auto;
             height:100%;
             float:left;
+            color:#fff;
             
             &:nth-child(1){
                 background: red;
@@ -32,6 +36,10 @@
 
              &:nth-child(4){
                 background: yellowgreen;
+            }
+
+             &:nth-child(5){
+               background: red;
             }
 
         }

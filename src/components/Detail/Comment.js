@@ -115,7 +115,6 @@ class Comment extends Component {
         } = this.props;
 
         let isEmpty = commentList && commentList.length ? false : true;
-        console.log(this.transform("green"));
 
         return (
             <div className="comment-list">
@@ -151,23 +150,6 @@ class Comment extends Component {
 
     componentDidMount() {
         this.props.loadCommentList();
-    }
-
-    /**
-     * 
-     * 
-     * @param {("green" | "yellow" | "red")} color 
-     * @returns {string} 
-     * 
-     * @memberOf Comment(Sam Liu)
-     */
-    transform(color: "green" | "yellow" | "red"): string {
-        switch (color) {
-            case "green":
-                return "success";
-            default:
-                return "";
-        }
     }
 
 };

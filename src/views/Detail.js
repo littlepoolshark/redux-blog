@@ -2,6 +2,8 @@ import React,{ Component } from "react";
 import { connect } from "react-redux";
 import { listActions , commentActions } from "./DetailRedux";
 import ArticleDetail from "../components/Detail/ArticleDetail";
+import { bindActionCreators } from "redux";
+import { push } from "react-router-redux";
 import Comment from "../components/Detail/Comment";
 import Slider from '../components/UI/Slider/Slider';
 import {
