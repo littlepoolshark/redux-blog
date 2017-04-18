@@ -22,23 +22,27 @@
             float:left;
             color:#fff;
             
-            &:nth-child(1){
-                background: red;
-            }
-
-             &:nth-child(2){
-                background:skyblue;
-            }
-
-             &:nth-child(3){
-                background: black;
-            }
-
-             &:nth-child(4){
+             &:nth-child(1){
                 background: yellowgreen;
             }
 
+            &:nth-child(2){
+                background: red;
+            }
+
+             &:nth-child(3){
+                background:skyblue;
+            }
+
+             &:nth-child(4){
+                background: black;
+            }
+
              &:nth-child(5){
+                background: yellowgreen;
+            }
+
+             &:nth-child(6){
                background: red;
             }
 
