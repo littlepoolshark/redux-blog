@@ -90,7 +90,7 @@ class Detail extends Component {
     render(){
         return (
             <div id="detail">
-                <Slider/>
+                <Slider defaultIndex={2}/>
                 <ArticleDetail
                     currArticleId={this.props.currArticleId}
                     nextArticleId={this.props.nextArticleId}

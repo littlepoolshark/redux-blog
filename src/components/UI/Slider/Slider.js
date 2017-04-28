@@ -1,116 +1,147 @@
-
+//@flow
 import React, { Component, PropTypes } from 'react';
 import Hammer from 'hammerjs';
 import './Slider.scss';
 
-const SCREENWIDTH=window.screen.width;
+const SCREENWIDTH: number = window.screen.width;
+let timer=null;
 
 class Slider extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            index: 1,
-            direction: "next",
-            deltax:-SCREENWIDTH
-        };
-    }
-    _next() {
-        this.setState((prevState, props) => {
-            return {
-                index: prevState.index + 1,
-                direction: "next"
-            }
-        })
+    props: {
+        defaultIndex: number,
+        durationTime: string,
+        isAutoPlay: boolean,
+        iShowDot: boolean
     }
 
-    _prev() {
-        this.setState((prevState, props) => {
+    static defaultProps = {
+        defaultIndex: 1,
+        durationTime: "0.5s",
+        isAutoPlay: true,
+        iShowDot: false
+    }
+
+    state: {
+        activeIndex: number,
+        isAnimating: boolean
+    }
+
+    constructor(props: Object) {
+        super(props);
+        this.state = {
+            activeIndex: props.defaultIndex || 1,
+            isAnimating: false
+        };
+    }
+
+    _goPrev() {
+        this._enableAnimation();
+        this.setState((prevState, prevProps) => {
             return {
-                index: prevState.index - 1,
-                direction: "prev"
+                activeIndex: prevState.activeIndex - 1,
+                isAnimating: true
             }
-        })
+        });
+    }
+
+    _goNext() {
+        this._enableAnimation();
+        this.setState((prevState, prevProps) => {
+            return {
+                activeIndex: prevState.activeIndex + 1,
+                isAnimating: true
+            }
+        });
+    }
+
+    _autoPlay() {
+        this.timer = setInterval(() => {
+            this._goNext();
+        }, 4000);
+    }
+
+    _enableAnimation() {
+        let className: string = this.refs.sliderWrapper.className;
+        if (className.indexOf("animate") === -1) {
+            this.refs.sliderWrapper.className += " animate";
+        };
+    }
+
+    _disableAnimation() {
+        let className: string = this.refs.sliderWrapper.className;
+        if (className.indexOf("animate") > -1) {
+            this.refs.sliderWrapper.className = className.replace('animate', '').trim();
+        };
+    }
+
+    _recover() {
+        let nextTranslateX = this.state.activeIndex * (-SCREENWIDTH);
+        this._setTranslateXTo(nextTranslateX);
     }
 
     _handleTransitionEnd() {
-        console.log("into _handleTransitionEnd")
-        let className=this.refs.sliderWrapper.className;
-        this.refs.sliderWrapper.className = className.replace('animate', '').trim();
+        this._disableAnimation();
 
-
-        if (this.currIndex === 0) {
-            this.currIndex=4;
-            this.refs.sliderWrapper.style.transform=`translate3d(${ -SCREENWIDTH * 4 }px,0,0)`;
+        if (this.state.activeIndex === 0) {
+            this.setState({
+                activeIndex: 4
+            }, () => {
+                this.setState({
+                    isAnimating: false
+                }, () => {
+                    console.log("into first if");
+                    if (!this.timer && this.props.isAutoPlay) {
+                        this._autoPlay();
+                    }
+                })
+            });
+        } else if (this.state.activeIndex === 5) {
+            this.setState({
+                activeIndex: 1
+            }, () => {
+                this.setState({
+                    isAnimating: false
+                }, () => {
+                    console.log("into second if");
+                    if (!this.timer && this.props.isAutoPlay) {
+                        this._autoPlay();
+                    }
+                })
+            });
+        } else {
+            this.setState({
+                isAnimating: false
+            }, () => {
+                console.log("into third if");
+                console.log('this.timer:',this.timer)
+                if (!this.timer && this.props.isAutoPlay) {
+                    this._autoPlay();
+                }
+            });
         }
-        if (this.currIndex === 5) {
-            this.currIndex=1;
-           this.refs.sliderWrapper.style.transform=`translate3d(${ -SCREENWIDTH * 1 }px,0,0)`;
-        }
-       
     }
 
-    _enableScroll() {
-        this.setState({
-            scrollable:true
-        })
-    }
-
-    _handleSwipe(e){
-        if(e.deltaX > 0){
-            this._prev();
-        }else {
-            this._next();
-        }
-    }
-
-     getCurrentTranslateX() {
-        let transfromStr = this.refs.sliderWrapper.style.transform;
-        let indexOfLeftBrace = transfromStr.indexOf("(");
-        let prevTranslateX = parseInt(transfromStr.slice(indexOfLeftBrace + 1, -1).split(",")[0]);
+    _getCurrentTranslateX(): number {
+        let transfromStr: string = this.refs.sliderWrapper.style.transform;
+        let indexOfLeftBrace: number = transfromStr.indexOf("(");
+        let prevTranslateX: number = parseInt(transfromStr.slice(indexOfLeftBrace + 1, -1).split(",")[0]);
 
         return prevTranslateX;
     }
 
-    _handlePan(e){ 
-    //    console.log('e',e);
-    //    let transfromStr= this.refs.sliderWrapper.style.transform;
-    //    let indexOfLeftBrace= transfromStr.indexOf("(");
-    //    let prevTranslateX=parseInt(transfromStr.slice(indexOfLeftBrace + 1,-1).split(",")[0]);
-    //    let nextTranslateX=0;
-    //    if(e.deltaX < 0){
-    //         nextTranslateX=prevTranslateX - 2;
-    //    }else{
-    //         nextTranslateX=prevTranslateX + 2;
-    //    }
-      let nextTranslateX=this.currTranslateX + e.deltaX;
-       this.refs.sliderWrapper.style.transform=`translate3d(${ nextTranslateX }px,0,0)`
+    _setTranslateXTo(translateX: number) {
+        this.refs.sliderWrapper.style.transform = `translate3d(${translateX}px,0,0)`
     }
 
     render() {
-        // let transformX = -this.state.index * SCREENWIDTH + "px";
-        // let sliderWrapperStyle = {
-        //     transform: `translate3d(${transformX},0,0)`
-        // };
-        // if (this.state.direction === "prev") {
-        //     if (this.state.index !== 4) {
-        //         sliderWrapperStyle.transitionDuration = "0.5s";
-        //     }
-        // }
 
-        // if (this.state.direction === "next") {
-        //     if (this.state.index !== 1) {
-        //         sliderWrapperStyle.transitionDuration = "0.5s";
-        //     }
-        // }
-        
-        let transformX = this.state.deltax   + "px";
+        let transformX = this.state.activeIndex * (-SCREENWIDTH);
         let sliderWrapperStyle = {
-            transform: `translate3d(-${SCREENWIDTH}px,0,0)`
+            transform: `translate3d(${transformX}px,0,0)`
         };
 
-
-        return (  
-            <div  className="slider-container" >
+        return (
+            <div className="slider-container" >
                 <ul
                     className="slider-wrapper"
                     ref="sliderWrapper"
@@ -132,60 +163,62 @@ class Slider extends Component {
         const itemsCount = 6;
         this.refs.sliderWrapper.style.width = SCREENWIDTH * itemsCount + "px";
         let lis = this.refs.sliderWrapper.getElementsByTagName("li");
-        for (var i = 0; i < lis.length; i++) {
-            var element = lis[i];
-            element.style.width = SCREENWIDTH + "px";
+        Array.prototype.map.call(lis, (ele, index) => {
+            ele.style.width = SCREENWIDTH + "px";
+        })
+
+        if(this.props.isAutoPlay){
+            this._autoPlay();
         }
+        
+        this.hammertime = new Hammer(this.refs.sliderWrapper);
+        this.hammertime.get('pan').set({ threshold: 10, direction: Hammer.DIRECTION_HORIZONTAL });
 
-        this.currIndex=1;
-        this.hammertime=new Hammer(this.refs.sliderWrapper);
-        this.hammertime.get('swipe').set({ velocity: 0.1 ,direction:Hammer.DIRECTION_HORIZONTAL});        
-        //this.hammertime.get('pan').set({ threshold: 10 ,direction:Hammer.DIRECTION_HORIZONTAL});
-        //this.hammertime.get('pan').dropRecognizeWith(this.hammertime.get('swipe'));
-
-        this.hammertime.on("panstart",(e) => {
-            //debug.log('into panstart');
-            let prevTranslateX=this.getCurrentTranslateX();
-            this.currTranslateX=prevTranslateX + e.deltaX;
+        this.hammertime.on("panstart", (e: Object) => {
+            if (this.state.isAnimating) return;
+            if (timer) {
+                
+                clearInterval(timer);
+                console.log('timer:',this.timer)
+            };
+            this._disableAnimation();
+            let prevTranslateX: number = this._getCurrentTranslateX();
+            this.currTranslateX = prevTranslateX + e.deltaX;
         });
-        this.hammertime.on("panmove",(e) => {
-            //debug.log('into panmove');
-            this._handlePan(e)
+        this.hammertime.on("panmove", (e) => {
+            if (this.state.isAnimating) return;
+            let nextTranslateX: number = this.currTranslateX + e.deltaX;
+            this._setTranslateXTo(nextTranslateX);
         });
 
-        this.hammertime.on("panend pancancel",(e) => {
-            //debug.log('into panend');
-           let precent=(Math.abs(this.getCurrentTranslateX() - this.currTranslateX ) + 10 )* 100  / SCREENWIDTH;
-           if(e.deltaX < 0){
-                if(precent > 20){
-                    this.currIndex +=1;
+        this.hammertime.on("panend pancancel", (e: Object) => {
+            if (this.state.isAnimating) return;
+            this._enableAnimation();
+            let precent: number = (Math.abs(this._getCurrentTranslateX() - this.currTranslateX) + 10) * 100 / SCREENWIDTH;
+
+            if (e.deltaX < 0) {
+                if (precent > 20) {
+                    this._goNext();
+                } else {
+                    this._recover();
                 }
-           }else {
-                 if(precent > 20){
-                    this.currIndex -=1;
+            } else {
+                if (precent > 20) {
+                    this._goPrev();
+                } else {
+                    this._recover();
                 }
-           }
-           let nextTranslateX=-SCREENWIDTH * this.currIndex ;
-           this.refs.sliderWrapper.className += " animate";
-           this.refs.sliderWrapper.style.transform=`translate3d(${ nextTranslateX }px,0,0)`;
-
+            }
         });
 
-        // this.hammertime.on("swipeleft",(e) => {
-        //     //debug.log('into swipeleft:');
-        // });
-        // this.hammertime.on("swiperight",(e) => {
-        //     //debug.log('into swiperight:');
-        // });
     }
 
-    componentDidUpdate() {
-
+    componentWillUnmount() {
+        this.hammertime = null;
+        this.currTranslateX = null;
+        this.timer && clearInterval(this.timer);
     }
 }
 
-Slider.propTypes = {
-
-};
 
 export default Slider;
